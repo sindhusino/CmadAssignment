@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.mydomain.service.Posts" table="POSTS" schema="cmad_blog" >
+  		 <id name="id" type="int" column="POST_ID">
+        	 <generator class="native"/>
+      	</id>
+      	<set name="postId" cascade="all" fetch="join">
+        	<key column="POST_ID"/>
+         	<one-to-many class="com.mydomain.service.Comments"/>
+      	</set>
+		<property name="postTitle" type="string">
+			<column name="POST_TITLE" length="200" />
+		</property>
+		<property name="postDate" type="timestamp">
+			<column name="POST_DATE"/>
+		</property>
+		<property name="postAbout" type="string">
+			<column name="POST_ABOUT" length="200" />
+		</property>
+		<property name="postTags" type="string">
+			<column name="POST_TAGS" length="32" />
+		</property>
+		<property name="postEmail" type="string">
+			<column name="EMAIL_ID" length="32" />
+		</property>
+	<!-- 	<many-to-one name="userId" class="com.mydomain.service.Users"
+            column="USER_ID" not-null="true"/>-->
+		
+	</class>
+</hibernate-mapping>

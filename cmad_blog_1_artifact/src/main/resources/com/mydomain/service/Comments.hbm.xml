@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.mydomain.service.Comments" table="COMMENTS" schema="cmad_blog" >
+   <id name="commentId" type="int" column="COMMENT_ID">
+         <generator class="native"/>
+      </id>
+		<property name="content" type="text">
+			<column name="CONTENT"/>
+		</property>
+		<property name="commentDate" type="timestamp">
+			<column name="COMMENT_DATE"/>
+		</property>
+			<property name="authorName" type="string">
+			<column name="AUTHOR_NAME" length="100" />
+		</property>
+		<property name="authorEmail" type="string">
+			<column name="AUTHOR_EMAIL" length="100" />
+		</property>
+		
+	</class>
+</hibernate-mapping>
+
