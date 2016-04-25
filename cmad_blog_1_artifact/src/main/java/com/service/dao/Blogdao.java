@@ -2,8 +2,10 @@ package com.service.dao;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -85,17 +87,28 @@ public class Blogdao {
 		System.out.println("\n SINDHU Updated Post return True");
 		return (true);
 	}
-	public boolean updateComment(Comments info) {
+	public boolean updateComment(Comments info, String title) {
 		Session ses = HibernateUtil.currentSession();
 		Transaction tx = null;
+		Criteria criteria = ses.createCriteria(Posts.class);   
+		criteria.add(Restrictions.like("postTitle", title));
+		Posts p = null;
+		System.out.println(info.toString());
+		p = (Posts)criteria.uniqueResult();
+		//Set<Comments> comment = new HashSet<Comments>();
+		Comments comm = new Comments(info.getContent(), info.getAuthorName(), info.getAuthorEmail());
+		p.getPostId().add(comm);
+		if (p == null) {
+			return (false);
+		}
 		try {
 			tx = ses.beginTransaction();
-			ses.save(info);
+		//	p.setPostId(comment);
+			ses.save(p);
 			tx.commit();
 		}catch (Exception e) { 
 			if (tx != null) {
 				tx.rollback();
-				System.out.println("Return null exception");
 				return (false);
 			}
 		} finally{

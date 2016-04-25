@@ -47,7 +47,7 @@ Blogdao dao = new Blogdao();
 		return dao.getTitles();
 	}
 	@GET
-	@Path("/{param}")
+	@Path("/blogpagetitle/{param}")
 	@Produces({MediaType.APPLICATION_JSON})
 	public Posts getBlogPage(@PathParam("param") String param) {
 		System.out.println("check if : "+param+ " exists\n" );
@@ -55,10 +55,10 @@ Blogdao dao = new Blogdao();
 	}
 	
 	@POST
-	@Path("/blogpage/comment")
+	@Path("/comment/{param}")
 	@Consumes({MediaType.APPLICATION_JSON})
-	public void updateComment(Comments comment) {
-		System.out.println("Insert to Comments db : "+comment.toString()+ " \n" );
-		dao.updateComment(comment);
+	public void updateComment(Comments comment,@PathParam("param") String param) {
+		System.out.println("Insert to Comments db : "+param+ " \n" );
+		dao.updateComment(comment,param);
 	}
 }

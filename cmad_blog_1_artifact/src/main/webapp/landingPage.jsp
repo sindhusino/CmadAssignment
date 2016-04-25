@@ -5,6 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="css/landingstyle.css" rel="stylesheet" type="text/css" />
 <!--[if lt IE 7]><style type="text/css">div { behavior: url(iepngfix.htc); }</style><![endif]-->
+<script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
+<script src="js/bloggers.js"></script>
 </head>
 <body>
 <div id="container_wrapper1">
@@ -16,6 +18,7 @@
       </div>
       <div id="menu">
         <ul>
+          <li><a href="create.jsp">New</a></li>
           <li><a href="about.jsp">About</a></li>
           <li><a href="contact.jsp">Contact</a></li>
           <li><a href="index.jsp">Logout</a></li>
@@ -26,7 +29,7 @@
           <div class="postbody">
           	<div>
           		<h1>
-          		<a href="bloggers.jsp">Welcome to Design Blog</a>
+          		<a id="titleContent" href="JavaScript:execute()">Welcome to Design Blog</a>
           		</h1>
             </div>
             <div class="publish_info">Post Date: 19-10-2020 · Tags: <a href="http://all-free-download.com/free-website-templates/">XHTML</a> · <a href="http://all-free-download.com/free-website-templates/">CSS</a> · <a href="http://all-free-download.com/free-website-templates/">Website Templates</a></div>
@@ -37,7 +40,7 @@
           <div class="postbody">
           	<div>
           		<h1>
-          		<a href="bloggers.jsp">Design Related Credits</a>
+          		<a id="titleContent" href="JavaScript:execute()">"Design Related Credits</a>
           		</h1>
             </div>
             <div class="publish_info">Post Date: 18-10-2020 · Tags: <a href="http://all-free-download.com/free-website-templates/">Interactive</a> · <a href="http://all-free-download.com/free-website-templates/">Flash</a> · <a href="http://all-free-download.com/free-website-templates/">3D Websites</a></div>
@@ -50,7 +53,7 @@
           <div class="postbody">
           <div>
           		<h1>
-          		<a href="bloggers.jsp"><span dir="ltr" id=":11g"><strong>Verification</strong></span> of XHTML and CSS</a>
+          		<a id="titleContent" href="JavaScript:execute()"><span dir="ltr" id=":11g"><strong>Verification</strong></span> of XHTML and CSS</a>
           		</h1>
             </div>
             <div class="publish_info">Post Date: 17-10-2020 · Tags: <a href="http://all-free-download.com/free-website-templates/">XHTML</a> · <a href="http://all-free-download.com/free-website-templates/">CSS</a> · <a href="http://all-free-download.com/free-website-templates/">Website Layouts</a></div>

@@ -21,7 +21,7 @@
 				<br/>
 				<h1 style="color: #FFF; width: 360px; margin-left: 20px; font-family: Segoe UI Light; font-weight: 100;">Login</h1>
 				<div id="info">Please enter your username and password to login</div>
-					<input type="text" id="login-text" placeholder="Username" />
+					<input type="text" id="login-text" placeholder="Email Id" />
 					<input type="password" id="login-pass" placeholder="Password" />
 				<input type="button" name ="login" value="Login" id="login-button" />
 			</div> <!-- end login-wrapper div -->

@@ -16,12 +16,12 @@ public class Posts {
 //	private int userId;
 
 	public Posts(){}
-	   public Posts(String postTitle, String postAbout, String tags,Set<Comments> postId) {
+	   public Posts(String postTitle, String postAbout, String tags) {
 		   this.postTitle = postTitle;
 		   this.postAbout = postAbout;
 		   this.postTags = tags;
 		   this.postDate = new Date();
-		   this.postId = postId;
+		   this.postId = new HashSet<Comments>();
 	   }
 	   
 	public void setId( int id ) {

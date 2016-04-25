@@ -3,15 +3,12 @@ $("#login-button").click(function(){
 var email = $("#login-text").val();
 var password = $("#login-pass").val();
 // Checking for blank fields.
-if( email =='' || password ==''){
-alert("Please fill all fields...!!!!!!");
-}else {
 	$.ajax({
         type : "POST",
-        url : 'blog/user/check/email',
+        url : 'blog/page/blogpage',
         dataType :"text",
         contentType: "application/json",
-        data : JSON.stringify({emailId:email,password:password}),
+        data : JSON.stringify({"postTitle":"title1","postAbout":"about1","postTags":"tag1","postEmail":"sins@cisco.com"}),
         success : function(data, status) {
         	//alert(status+": Valid User");
         	window.location = "index2.jsp";
@@ -23,6 +20,6 @@ alert("Please fill all fields...!!!!!!");
 });
 	
 
-}
+
 });
 });
