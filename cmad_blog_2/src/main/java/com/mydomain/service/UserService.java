@@ -1,5 +1,6 @@
 package com.mydomain.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.mongodb.morphia.Datastore;
 
 import com.service.dao.UserDao;
 
@@ -34,22 +37,35 @@ UserDao dao = new UserDao();
 	public Response validateUser(Users u) {	
 		System.out.println("Validate User : "+u.toString()+ " exists\n" );
 		boolean validate;
-		Users user = new Users();
-		user.setEmailId(u.getEmailId());
-		user.setPassword(u.getPassword());
-		validate = dao.validateUser(user);
-		if(validate) {
-			System.out.println("\n SINDHU Validated Successfully");
-			//Response.ok(user, MediaType.APPLICATION_JSON).build();
-			return Response.status(Response.Status.OK).type(MediaType.APPLICATION_JSON).build();
-		}
-		else { 
-			System.out.println("\n SINDHU Not validated");
-			return Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).build();
-		}
+		
+		try {
+			Users user = new Users();
+			user.setEmailId(u.getEmailId());
+			user.setPassword(u.getPassword());
+			validate = dao.validateUser(user);
+			if(validate) {
+				System.out.println("\n SINDHU Validated Successfully");
+				//Response.ok(user, MediaType.APPLICATION_JSON).build();
+
+				// Issue a token for the user
+				String token = issueToken(user.getEmailId());
+				user.setTokenValue(token);
+				System.out.println("token"+ token);
+				return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            //return Response.status(Response.Status.OK).type(MediaType.APPLICATION_JSON).build();
+			}
+			else { 
+				System.out.println("\n SINDHU Not validated");
+				return Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).build();
+			}
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        } 
 	}
 	
 	@GET
+	@Secured
 	@Path("/blogs")
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<Users> getUser() {
@@ -112,4 +128,23 @@ UserDao dao = new UserDao();
 		return false;
 		
 	}
+	
+    private String issueToken(String username) {
+    	Datastore dataStore = ServicesFactory.getMongoDB();
+    	
+    	Session session = dataStore.createQuery(Session.class).filter("username =", username ).get();
+    	
+    	if (session == null) {
+    		session = new Session();
+    		session.setemailId(username);
+    	}
+    	
+    	session.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
+    	
+    	dataStore.save(session);
+    	
+    	Session sess = dataStore.createQuery(Session.class).filter("username =", username ).get(); 
+    	
+    	return sess.getId();
+    }
 }

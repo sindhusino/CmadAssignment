@@ -38,8 +38,15 @@ public class Users {
 	private String emailId="";
 	private String password="";
 	private String name="";
+	private String tokenValue="";
 //	private Set<Posts> userId;
 
+	public String getTokenValue() {
+		return tokenValue;
+	}
+	public void setTokenValue(String tokenValue) {
+		this.tokenValue = tokenValue;
+	}
 	public Users(){}
 	   public Users(String emailId, String name, String password) {
 		   this.emailId = emailId;

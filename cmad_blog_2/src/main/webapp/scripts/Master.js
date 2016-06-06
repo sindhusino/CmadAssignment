@@ -39,7 +39,20 @@
             }
         };
 	});
-	app.controller("LoginController", function($http, $log, $scope, $location) {
+	app.service('sharedToken', function () {
+		var token = {};
+
+        return {
+            gettoken: function () {
+                return token;
+            },
+            settoken: function(value) {
+            	token = value;
+            }
+        };
+	});
+	
+	app.controller("LoginController",function($http, $log, $scope, $location,sharedToken) {
 		var controller = this;
 		$scope.Users = {};
 		$scope.loginDisplay = true;
@@ -50,11 +63,13 @@
 			var formGet = $http.post(
 					'blog/user/check/email',
 					$scope.user).success(function(data) {
+						console.log("request done");
 				console.log(data);
+				$scope.token = data;
+				sharedToken.settoken($scope.token);
 				//$scope.users.push(angular.copy($scope.user));
 				//$scope.Users.push($scope.User);
 //				$scope.form = false;
-				$scope.loginDisplay = false;
 				$location.url('/Welcome');
 				console.log(data);
 			});
@@ -87,10 +102,14 @@
 			document.getElementById('regbutton').style.background = "#dfd7c6";
 		};
 	});
-	app.controller('BloggersController', ['$scope','$http','$log', '$location', 'sharedProperties','$route', function($scope,$http,$log,$location,sharedProperties,$route) {
+	app.controller('BloggersController', ['$scope','$http','$log', '$location', 'sharedProperties', '$route','sharedToken', function($scope,$http,$log,$location,sharedProperties,$route,sharedToken) {
 		$scope.loginDisplay = false;
 		console.log("inside ContactController: ID: "+$scope.id);
 		$scope.id = sharedProperties.getProperty();
+		
+		$scope.token = sharedToken.gettoken();
+		console.log($scope.token.tokenValue);
+		$http.defaults.headers.common['Authorization'] = 'Bearer ' + $scope.token.tokenValue;
 		
 		var formGet = $http.get(
 				'blog/page/blogpagetitle/'+$scope.id,
@@ -126,6 +145,7 @@
 			console.log("inside Submit : ID"+ $scope.id);
 			console.log($scope.comment);
 			console.log($scope.comment.content);
+			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $scope.token.tokenValue;
 			$http.post('blog/page/comment/'+$scope.id, $scope.comment).success(
 					function(data, status, headers, config) {
 						console.log("success");
@@ -134,15 +154,19 @@
 		};
 	}]);
 	
-	app.controller('HomeController', ['$scope','$http','$log','$location', function($scope,$http,$log,$location) {
+	app.controller('HomeController', ['$scope','$http','$log','$location','sharedToken', function($scope,$http,$log,$location, sharedToken) {
 		$scope.loginDisplay = false;
 		console.log("insode BloggersController");
 	}]);
 	
-	app.controller('WelcomeController', ['$scope','$http','$log','$location','sharedProperties','$route', function($scope,$http,$log,$location, sharedProperties, $route) {
+	app.controller('WelcomeController', ['$scope','$http','$log','$location','sharedProperties','$route','sharedToken', function($scope,$http,$log,$location, sharedProperties, $route, sharedToken) {
 		$scope.loginDisplay = false;
+		
 		console.log("inside WelcomeController");
 		$scope.titles = [];
+		$scope.token = sharedToken.gettoken();
+		console.log($scope.token.tokenValue);
+		$http.defaults.headers.common['Authorization'] = 'Bearer ' + $scope.token.tokenValue;
 		
 		var formGet = $http.get(
 				'blog/page',
@@ -170,6 +194,7 @@
 		$scope.Search = function(value) {
 			$scope.title = value;
 			console.log("inside Search");
+			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $scope.token.tokenValue;
 			var formGet = $http.get(
 					'blog/user/titles',
 					$scope.title).success(function(data) {
@@ -195,12 +220,12 @@
 		};
 	}]);
 	
-	app.controller('LogoutController', ['$scope','$http','$log','$location', function($scope,$http,$log,$location) {
+	app.controller('LogoutController', ['$scope','$http','$log','$location','sharedToken', function($scope,$http,$log,$location, sharedToken) {
 		$scope.loginDisplay = false;
 		console.log("inside LogoutController");
 	}]);
 	
-	app.controller('AboutController', ['$scope','$http','$log','$location', function($scope,$http,$log,$location) {
+	app.controller('AboutController', ['$scope','$http','$log','$location','sharedToken', function($scope,$http,$log,$location,sharedToken) {
 		$scope.loginDisplay = false;
 		console.log("inside AboutController");
 		$scope.Contact = function() {
@@ -218,7 +243,7 @@
 		};
 	}]);
 	
-	app.controller('CreateController', ['$scope','$http','$log','$location', function($scope,$http,$log,$location) {
+	app.controller('CreateController', ['$scope','$http','$log','$location','sharedToken', function($scope,$http,$log,$location,sharedToken) {
 		$scope.loginDisplay = false;
 		
 		console.log("inside CreateController");
@@ -236,8 +261,13 @@
 			$location.url('/');
 		};
 		
+		
+		
 		$scope.Submit = function(value) {
 			$scope.data = value;
+			$scope.token = sharedToken.gettoken();
+			console.log($scope.token.tokenValue);
+			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $scope.token.tokenValue;
 			$http.post("blog/page/blogpage", $scope.data).success(
 					function(data, status, headers, config) {
 						console.log("success");
@@ -252,7 +282,7 @@
 		};
 	}]);
 	
-	app.controller('ContactController', ['$scope','$http','$log','$location', function($scope,$http,$log,$location) {
+	app.controller('ContactController', ['$scope','$http','$log','$location','sharedToken', function($scope,$http,$log,$location,sharedToken) {
 		$scope.loginDisplay = false;
 		console.log("inside ContactController");
 		$scope.About = function() {

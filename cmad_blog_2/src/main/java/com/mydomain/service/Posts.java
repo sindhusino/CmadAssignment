@@ -14,7 +14,8 @@ import org.mongodb.morphia.annotations.Index;
 import org.mongodb.morphia.annotations.Indexes;
 @Entity("posts")
 @Indexes(
-    @Index(fields ={@Field("id")})
+	 @Index(fields ={@Field("id"), @Field("postTitle"), @Field("postAbout")})
+   // @Index(fields ={@Field("id")})
 )
 public class Posts {
 	@Id

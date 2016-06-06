@@ -84,4 +84,21 @@ public class Blogdao {
 						.equal(oid).get();
 		return post;
 	}
+	
+	public List<Posts> blogSearchStr(String id) {
+		Datastore dataStore = ServicesFactory.getMongoDB();
+		ObjectId oid = null;
+		try {
+				oid = new ObjectId(id);
+				
+			} catch (Exception e) {// Ignore format errors
+			}
+		List<Posts> post= dataStore.createQuery(Posts.class).search(id).asList();
+		//find({$text: {$search: "dogs"}}, {score: {$meta: "toextScore"}}).sort({score:{$meta:"textScore"}})
+		//post = dataStore.createQuery(Posts.class).field("id")
+						//.equal(oid).get();
+		return post;
+	}
+	
+	
 }

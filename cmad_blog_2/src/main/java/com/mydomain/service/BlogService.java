@@ -29,6 +29,7 @@ Blogdao dao = new Blogdao();
 	}
 	
 	@POST
+	@Secured
 	@Path("/blogpage")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public void updatePost(Posts info) {	
@@ -37,11 +38,13 @@ Blogdao dao = new Blogdao();
 	}
 	
 	@GET
+	@Secured
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<Posts> getTitlesPage() {
 		return dao.getTitles();
 	}
 	@GET
+	@Secured
 	@Path("/blogpagetitle/{param}")
 	@Produces({MediaType.APPLICATION_JSON})
 	public Posts getBlogPage(@PathParam("param") String param) {
@@ -50,11 +53,20 @@ Blogdao dao = new Blogdao();
 	}
 	
 	@POST
+	@Secured
 	@Path("/comment/{param}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public void updateComment(Comments comment,@PathParam("param") String param) {
 		System.out.println("Insert to Comments db : "+param+ " \n" );
 		System.out.println("content :" + comment);
 		dao.updateComment(comment,param);
+	}
+	@POST
+	@Secured
+	@Path("/search/{param}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	public List<Posts> blogSearch(@PathParam("param") String param) {
+		System.out.println("Insert to Comments db : "+param+ " \n" );
+		return (dao.blogSearchStr(param));
 	}
 }
